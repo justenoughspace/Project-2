@@ -7,6 +7,8 @@ body {
   padding: 0;
   margin: 0;
   font-size: 16px;
+  color: #fff;
+  background-color: green;
 }
 
 h1 {
@@ -68,15 +70,6 @@ h2 {
   display: block;
 }
 
-/*.chartLine {
-  width: 50%;
-      float:right;
-      width:50%;
-  height: 600px;
-      float:right;
-  margin: 0 auto;
-  display: block;
-}*/
 rect {
   stroke: white;
 }
@@ -85,10 +78,12 @@ circle {
   fill: #dfb8ff;
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 20px;
+.container-fluid {
+  background-color: green;
+}
+
+.col-lg-7 {
+  height: 30%;
 }
 
 .footer {
@@ -96,4 +91,18 @@ circle {
   font-style: italic;
   text-align: center;
   padding: 40px;
+}
+
+#introText {
+  padding: 0px 200px;
+}
+
+.placeholder-1 {
+  height: 400px;
+  width: 800px;
+  background-color: #FF0033
+}
+
+.vis-2 {
+  padding-left: 100px;
 }
