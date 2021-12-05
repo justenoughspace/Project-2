@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<!-- Load d3.js -->
+<script src="https://d3js.org/d3.v4.js"></script>
+
+<!-- Create a div where the graph will take place -->
+<div id="cs_chart"></div>
+
+<script>
+
+  //Maybe include a dropdown to switch between stressed/not stressed
+
+  var margin = {top: 30, right: 30, bottom: 70, left: 60},
+      width = 700 - margin.left - margin.right,
+      height = 400 - margin.top - margin.bottom;
+  
+  
+  var svg = d3.select("#cs_chart")
+    .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+      .attr("transform",
+            "translate(" + margin.left + "," + margin.top + ")");
+  
+  let results = [
+  {id: "Improved Skillset", value: 0},
+  {id: "Work/Life Balance", value: 0},
+  {id: "More Productive", value: 0},
+  {id: "Laziness", value: 0},
+  {id: "Professional Growth", value: 0},
+]
+let improved_skillset = 0
+let work_balance = 0
+let more_productive = 0
+let laziness = 0
+let professional_growth = 0
+let stressed = 81
+let calmer = 0
+
+d3.csv("WFH_WFO_dataset.csv", function(data) {
+          for (var i = 0; i < data.length; i++) {
+            str = data[i].calmer_stressed;
+            skills = data[i].RM_improved_skillset
+            balance = data[i].RM_better_work_life_balance
+            prod = data[i].RM_productive
+            lazy = data[i].RM_lazy
+            growth = data[i].RM_professional_growth
+            if (str == "CALMER"){
+              calmer ++
+              results[0].value = results[0].value + +skills
+              results[1].value = results[1].value + +balance
+              results[2].value = results[2].value + +prod
+              results[3].value = results[3].value + +lazy
+              results[4].value = results[4].value + +growth
+            } 
+            
+           wow()  
+          }
+          console.log("results", results)
+          
+        });		
+  
+  function wow() {
+  let x = d3.scaleBand()
+    .range([ 0, width ])
+    .domain(results.map(function(d) { return d.id; }))
+    .padding(0.2);
+  svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x))
+    
+  
+  let y = d3.scaleLinear()
+    .domain([0, 5])
+    .range([ height, 0]);
+  svg.append("g")
+    .call(d3.axisLeft(y));
+  
+  svg.selectAll()
+    .data(results)
+    .enter()
+    .append("rect")
+      .attr("x", function(d) { return x(d.id); })
+      .attr("y", function(d) { return y(d.value / stressed); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.value / stressed); })
+      .attr("fill", "#ff0033")
+      .attr("class", function(results) { return `${results.id}`})
+      .on('click', d =>
+					displayTotal(d.data.id)
+				)
+      
+  
+  
+  }
+</script>
